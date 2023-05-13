@@ -48,17 +48,20 @@ class SeriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Serie $series)
     {
-        //
+        return view("series.edit")->with("serie", $series);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Serie $series, Request $request)
     {
-        //
+        $series->fill($request->all());
+        $series->save();
+
+        return to_route("series.index")->with("mensagem.sucesso", "Série {$series->nome} atualizada com sucesso!");
     }
 
     /**

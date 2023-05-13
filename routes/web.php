@@ -26,4 +26,4 @@ Route::get('/', function () {
 // });
 
 // Utilizando Resourse
-Route::resource("/series", SeriesController::class)->only(['index', 'create', 'store', 'destroy']);
+Route::resource("/series", SeriesController::class)->except('show');
