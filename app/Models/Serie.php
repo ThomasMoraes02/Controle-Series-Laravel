@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Season;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Serie extends Model
 {
@@ -11,4 +12,9 @@ class Serie extends Model
 
     /** @var array Somente os campos que serão preenchidos */
     protected $fillable = ['nome'];
+
+    public function temporadas()
+    {
+        return $this->hasMany(Season::class);
+    }
 }
