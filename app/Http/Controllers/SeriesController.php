@@ -32,9 +32,9 @@ class SeriesController extends Controller
      */
     public function store(Request $request)
     {
-        Serie::create($request->all());
+        $serie = Serie::create($request->all());
 
-        session()->flash("mensagem.sucesso", "Série criada com sucesso!");
+        session()->flash("mensagem.sucesso", "Série {$serie->nome} criada com sucesso!");
 
         return to_route("series.index");
     }
@@ -66,11 +66,10 @@ class SeriesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(Serie $series)
     {
-        Serie::destroy($request->series);
-
-        session()->flash("mensagem.sucesso", "Série excluída com sucesso!");
+        $series->delete();
+        session()->flash("mensagem.sucesso", "Série {$series->nome} excluída com sucesso!");
 
         return to_route("series.index");
     }
