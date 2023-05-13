@@ -25,5 +25,5 @@ Route::get('/', function () {
 //     Route::post("/series/salvar","store")->name("series.store");
 // });
 
-// Utilizando Resourse -> Vai esperar por: index,store, create, edit and update
-Route::resource("/series", SeriesController::class);
+// Utilizando Resourse
+Route::resource("/series", SeriesController::class)->only(['index', 'create', 'store', 'destroy']);
