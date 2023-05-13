@@ -34,9 +34,7 @@ class SeriesController extends Controller
     {
         $serie = Serie::create($request->all());
 
-        session()->flash("mensagem.sucesso", "Série {$serie->nome} criada com sucesso!");
-
-        return to_route("series.index");
+        return to_route("series.index")->with("mensagem.sucesso", "Série {$serie->nome} criada com sucesso!");
     }
 
     /**
@@ -69,8 +67,6 @@ class SeriesController extends Controller
     public function destroy(Serie $series)
     {
         $series->delete();
-        session()->flash("mensagem.sucesso", "Série {$series->nome} excluída com sucesso!");
-
-        return to_route("series.index");
+        return to_route("series.index")->with("mensagem.sucesso", "Série {$series->nome} excluída com sucesso!");
     }
 }
