@@ -6,6 +6,7 @@ use App\Models\Season;
 use App\Models\Series;
 use App\Models\Episode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\SeriesFormRequest;
 
 class SeriesController extends Controller
@@ -34,27 +35,31 @@ class SeriesController extends Controller
      */
     public function store(SeriesFormRequest $request)
     {
-        $serie = Series::create($request->all());
+        $serie = DB::transaction(function() use ($request) {
+            $serie = Series::create($request->all());
 
-        $seasons = [];
-        for ($i=1; $i <= $request->seasonsQty; $i++) { 
-            $seasons[] = [
-                'series_id' => $serie->id,
-                'number' => $i,
-            ];
-        }
-        Season::insert($seasons);
-
-        $episodes = [];
-        foreach($serie->seasons as $season) {
-            for ($e=1; $e <= $request->episodesPerSeason; $e++) { 
-                $episodes[] = [
-                    'season_id' => $season->id,
-                    'number' => $e
+            $seasons = [];
+            for ($i=1; $i <= $request->seasonsQty; $i++) { 
+                $seasons[] = [
+                    'series_id' => $serie->id,
+                    'number' => $i,
                 ];
             }
-        }
-        Episode::insert($episodes);
+            Season::insert($seasons);
+    
+            $episodes = [];
+            foreach($serie->seasons as $season) {
+                for ($e=1; $e <= $request->episodesPerSeason; $e++) { 
+                    $episodes[] = [
+                        'season_id' => $season->id,
+                        'number' => $e
+                    ];
+                }
+            }
+            Episode::insert($episodes);
+
+            return $serie;
+        });
 
         return to_route("series.index")->with("mensagem.sucesso", "Série {$serie->nome} criada com sucesso!");
     }
