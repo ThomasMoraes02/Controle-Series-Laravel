@@ -10,7 +10,8 @@ class EpisodesController
     public function index(Season $season)
     {
         return view('episodes.index', [
-            'episodes' => $season->episodes
+            'episodes' => $season->episodes,
+            'mensagemSucesso' => session()->get('mensagemSucesso')
         ]);
     }
 
@@ -29,6 +30,6 @@ class EpisodesController
 
         $season->push();
 
-        return to_route('episodes.index', $season->id);
+        return to_route('episodes.index', $season->id)->with('mensagemSucesso', 'Os episódios foram atualizados com sucesso!');
     }
 }

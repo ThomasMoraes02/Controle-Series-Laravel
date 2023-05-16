@@ -18,6 +18,13 @@
     <div class="container">
         <h1>{{ $title }}</h1>
 
+        @isset($mensagemSucesso)
+            <div class="alert alert-success">
+                {{ $mensagemSucesso }}
+            </div>        
+        @endisset
+
+
         @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
